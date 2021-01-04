@@ -1,0 +1,19 @@
+n = list(map(int, input().split()))       # n, m, k
+m = list(map(int, input().split()))
+m.sort(reverse=True)
+result = 0
+b = 0
+for j in range(n[1]):
+    for i in range(n[2]):
+        result += m[0]
+        b += 1
+        if b==n[1]:
+            break
+    if b==n[1]:
+        break
+    j += 1
+    result += m[1]
+    b += 1
+    if b==n[1]:
+        break
+print(result)

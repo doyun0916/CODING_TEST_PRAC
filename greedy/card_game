@@ -1,0 +1,9 @@
+n, m = map(int, input().split())
+result = []
+fin = []
+for i in range(n):
+    result.append(list(map(int, input().split())))
+    result[i].sort()
+    fin.append(result[i][0])
+fin.sort(reverse=True)
+print(fin[0])

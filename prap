@@ -1,0 +1,41 @@
+x, y = map(int, input().split())
+xd, yd, d = map(int, input().split())
+arr = []
+dir = [0, 1, 2, 3]
+mov = [(-1, 0),(0, 1),(1, 0),(0, -1)]
+temp = d
+c = 0
+for i in range(x):
+    arr.append(list(map(int, input().split())))
+while 1:
+    if (yd-1 < 0 or arr[xd][yd-1]==1) and (xd-1 < 0 or arr[xd-1][yd]==1) and (yd+1 > y or arr[xd][yd+1]==1) and (xd+1 > x or arr[xd+1][yd]==1):
+        break
+    if temp == dir[0]:
+        temp = 3
+        if yd-1 < 0 or arr[xd][yd-1]==1:
+            continue
+        else:
+            yd = yd-1
+            c += 1
+    elif temp == dir[1]:
+        temp = 0
+        if xd-1 < 0 or arr[xd-1][yd]==1:
+            continue
+        else:
+            xd = xd-1
+            c += 1
+    elif temp == dir[2]:
+        temp = 1
+        if yd+1 > y or arr[xd][yd+1]==1:
+            continue
+        else:
+            yd = yd + 1
+            c += 1
+    elif temp == dir[3]:
+        temp = 2
+        if xd+1 > x or arr[xd+1][yd]==1:
+            continue
+        else:
+            xd = xd + 1
+            c += 1
+print(c)

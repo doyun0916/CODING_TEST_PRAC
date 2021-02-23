@@ -1,438 +1,292 @@
-######## Question 1 ##########################3
+## Q15 ##
 # from collections import deque
-#
-# def bfs(graph, s, visited):
-#     queue = deque([s])
-#     #visited[s] = True
-#     while queue:
-#         now = queue.popleft()
-#         for rest in graph[now]:
-#             if visited[rest] == -1:
-#                 queue.append(rest)
-#                 visited[rest] = visited[now] + 1
-#     return visited
-#
-#
 # n, m, k, x = map(int, input().split())
-# road = [[] for i in range(n+1)]
-# for _ in range(m):
+# graph = [[] for _ in range(n+1)]
+# for i in range(m):
 #     a, b = map(int, input().split())
-#     road[a].append(b)
+#     graph[a].append(b)
 #
-# visited = [-1] * (n+1)
-# visited[x] = 0
-# presence = False
-# result = bfs(road, x, visited)
-# for i in result:
-#     if i == k:
-#         print(result.index(i))
-#         presence = True
+# visited = [False] * (n+1)
 #
-# if presence == False:
+# def bfs(graph, start, visited, k):
+#     result = []
+#     length = 0
+#     q = deque([(start, length)])
+#     visited[start] = True
+#     while q:
+#         v, leng = q.popleft()
+#         if leng == k:
+#             result.append(v)
+#         leng += 1
+#         for i in graph[v]:
+#             if not visited[i]:
+#                 q.append((i, leng))
+#                 visited[i] = True
+#
+#     return result
+#
+# final = bfs(graph, x, visited, k)
+# final.sort()
+# if not final:
 #     print(-1)
-
-####### Question 2 #####################################
-# 0 빈칸, 1 벽, 2 바이러스       벽 3개 세우기 가능
-# 퍼지고 난 뒤의 안전영역의 크기는?
-#
-# def spread(temp):
-#     dx = [0, 0, 1, -1]
-#     dy = [1, -1, 0, 0]
-#     n2 =len(temp)
-#     m2 = len(temp[0])
-#     for i in range(n2):
-#         for j in range(m2):
-#             if temp[i][j] == 2:
-#                 for k in range(4):
-#                     dux = dx[k] + i
-#                     duy = dy[k] + j
-#                     if 0 <= dux < n2 and 0 <= duy < m2 and temp[dux][duy] == 0:
-#                         temp[dux][duy] = 2
-#                         spread(temp)
-#     return temp
-#
-#
-# def cases(mapp, temp):
-#     global wall
-#     global result
-#     if wall == 3:
-#         for p in range(len(mapp)):
-#             for q in range(len(mapp[0])):
-#                 temp[p][q] = mapp[p][q]
-#         fin_map = spread(temp)
-#         result_temp = 0
-#         for k in range(len(fin_map)):
-#             result_temp += fin_map[k].count(0)
-#         result = max(result, result_temp)
-#         return result
-#
-#     for i in range(len(mapp)):
-#         for j in range(len(mapp[0])):
-#             if mapp[i][j] == 0:
-#                 mapp[i][j] = 1
-#                 wall += 1
-#                 cases(mapp, temp)
-#                 wall -= 1
-#                 mapp[i][j] = 0
-#
-#
-# n, m = map(int, input().split())
-# mapp = []
-# temp = [[0] * m for _ in range(n)]
-# for i in range(n):
-#     mapp.append(list(map(int, input().split())))
-#
-# wall = 0
-# result = 0
-#
-# cases(mapp, temp)
-# print(result)
-
-############ question 3 ######################################
-# n, k = map(int, input().split())
-# mapp = []
-# for i in range(n):
-#     mapp.append(list(map(int, input().split())))
-# s, x, y = map(int, input().split())
-#
-#
-# def spread(mapp, k, s):
-#     dx = [0, 0, 1, -1]
-#     dy = [1, -1, 0, 0]
-#     x_axis = len(mapp)
-#     y_axis = len(mapp[0])
-#     for _ in range(s):
-#         for c in range(1, k + 1):
-#             for i in range(x_axis):
-#                 for j in range(y_axis):
-#                     if mapp[i][j] == c:
-#                         for l in range(4):
-#                             dux = dx[l] + i
-#                             duy = dy[l] + j
-#                             if 0 <= dux < x_axis and 0 <= duy < y_axis and mapp[dux][duy] == 0:
-#                                 mapp[dux][duy] = -c
-#             for i in range(x_axis):
-#                 for j in range(y_axis):
-#                     if mapp[i][j] < 0:
-#                         mapp[i][j] = mapp[i][j] * -1
-#     return mapp
-#
-# print(spread(mapp, k, s)[x-1][y-1])
-
-#### question 4 ##############################################
-# from collections import deque
-# queue = deque([])
-#
-# def right_word(w):
-#     count = 0
-#     if not w:
-#         return []
-#     if w[0] == ")":
-#         return False
-#     else:
-#         for i in range(len(w)):
-#             if w[i] == "(":
-#                 count += 1
-#             else:
-#                 count -= 1
-#         if count == 0:
-#             return True
-#         else:
-#             return False
-#
-# def solution(p):
-#     left = 0
-#     right = 0
-#     temp = []
-#     word = list(p)
-#     if not word:
-#         return []
-#     for i in range(len(word)):
-#         if word[i] == "(":
-#             left += 1
-#         elif word[i] == ")":
-#             right += 1
-#         if left == right:
-#             u = word[0:i+1]
-#             v = word[i+1:]
-#             if right_word(u):
-#                 return u + solution(v)
-#             else:
-#                 temp.append("(")
-#                 temp = temp + solution(v)
-#                 temp.append(")")
-#                 u.pop(0)
-#                 u.pop()
-#                 for k in range(len(u)):
-#                     if u[k] == "(":
-#                         u[k] = ")"
-#                     else:
-#                         u[k] = "("
-#                 temp = temp + u
-#                 return temp
-#
-# result = solution("()))((()")
-# for i in range(len(result)):
-#     print(result[i], end='')
-
-########## Question 5 ##################################################
-# n = int(input())
-# data = list(map(int, input().split()))
-# add, sub, mul, div = map(int, input().split())
-# min_val = int(1e9)
-# max_val = int(-1e9)
-# i = 0
-# def cal(data, now):
-#     global min_val, max_val, add, sub, mul, div, i
-#     if i == n-1:
-#         min_val = min(min_val, now)
-#         max_val = max(max_val, now)
-#         return
-#     if add > 0:
-#         add -= 1
-#         i += 1
-#         cal(data, now + data[i])
-#         i -= 1
-#         add += 1
-#     if sub > 0:
-#         sub -= 1
-#         i += 1
-#         cal(data, now - data[i])
-#         i -= 1
-#         sub += 1
-#     if mul > 0:
-#         mul -= 1
-#         i += 1
-#         cal(data, now * data[i])
-#         i -= 1
-#         mul += 1
-#     if div > 0:
-#         div -= 1
-#         i += 1
-#         cal(data, int(now / data[i]))
-#         i -= 1
-#         div += 1
-#
-# cal(data, data[0])
-# print(max_val, min_val)
-
-######### Question 6 ##################################################
-#선생 T, 학생 S, 장애 O
-# 장애물 3개 설치해야함. 모든 학생이 피할 수 있어야함. 가능하면 yes else no
-# n = int(input())
-# mapp = []
-# for i in range(n):
-#     mapp.append(list(input().split()))
-# #mapp_test = [[0] * n for _ in range(n)]
-# i = 0
-# c = 0
-# def student_check(mapp):
-#     dx = [0, 0, 1, -1]
-#     dy = [1, -1, 0, 0]
-#     n = len(mapp)
-#     for i in range(n):
-#         for j in range(n):
-#             if mapp[i][j] == 'T':
-#                 dirx = i
-#                 diry = j
-#                 while True:
-#                     dix = dirx
-#                     diy = diry
-#                     while diy < n:
-#                         if mapp[dix][diy] == 'O':
-#                             break
-#                         if mapp[dix][diy] == 'S':
-#                             return False
-#                         dix += dx[0]
-#                         diy += dy[0]
-#                     dix = dirx
-#                     diy = diry
-#                     while diy >= 0:
-#                         if mapp[dix][diy] == 'O':
-#                             break
-#                         if mapp[dix][diy] == 'S':
-#                             return False
-#                         dix += dx[1]
-#                         diy += dy[1]
-#                     dix = dirx
-#                     diy = diry
-#                     while dix < n:
-#                         if mapp[dix][diy] == 'O':
-#                             break
-#                         if mapp[dix][diy] == 'S':
-#                             return False
-#                         dix += dx[2]
-#                         diy += dy[2]
-#                     dix = dirx
-#                     diy = diry
-#                     while dix >= 0:
-#                         if mapp[dix][diy] == 'O':
-#                             break
-#                         if mapp[dix][diy] == 'S':
-#                             return False
-#                         dix += dx[3]
-#                         diy += dy[3]
-#                     break
-#     return True
-#
-# def check(mapp):
-#     #global mapp_test
-#     global c
-#     for p in range(n):
-#         for q in range(n):
-#             if c == 3:
-#                 if student_check(mapp):
-#                     return 'Yes'
-#                 mapp[p][q-1] = 'X'
-#                 c -= 1
-#             if mapp[p][q] == 'X':
-#                 mapp[p][q] = 'O'
-#                 c += 1
-#                 check(mapp)
-#     return 'No'
-#
-# print(check(mapp))
-#
-# #### 답 ##########
-# from itertools import combinations
-#
-# n = int(input())
-# board = []
-# teachers = []
-# spaces = []
-#
-# for i in range(n):
-#     board.append(list(input().split()))
-#     for j in range(n):
-#         if board[i][j] == 'T':
-#             teachers.append((i, j))
-#         if board[i][j] == 'X':
-#             spaces.append((i, j)
-#
-# def watch(x, y, direction):
-#     if direction == 0:
-#         while y >= 0:
-#             if board[x][y] == 'S':
-#                 return True
-#             if board[x][y] == 'O':
-#                 return False
-#             y -= 1
-#     if direction == 1:
-#         while y < n:
-#             if board[x][y] == 'S':
-#                 return True
-#             if board[x][y] == 'O':
-#                 return False
-#             y += 1
-#     if direction == 2:
-#         while x >= 0:
-#             if board[x][y] == 'S':
-#                 return True
-#             if board[x][y] == 'O':
-#                 return False
-#             x -= 1
-#     if direction == 3:
-#         while x < n:
-#             if board[x][y] == 'S':
-#                 return True
-#             if board[x][y] == 'O':
-#                 return False
-#             x += 1
-#     return False
-#
-# def process():
-#     for x,y in teachers:
-#         for i in range(4):
-#             if watch(x, y, i):
-#                 return True
-#     return False
-#
-# find = False
-#
-# for data in combinations(spaces, 3):
-#     for x, y in data:
-#         board[x][y] = '0'
-#     if not process():
-#         find = True
-#         break
-#     for x, y in data:
-#         board[x][y] = 'X'
-#
-# if find:
-#     print('Yes')
 # else:
-#     print('No')
+#     for i in final:
+#         print(i)
 
-########################## Question 7 #############################################################################
-# 국경선 공유(동서남북) 두 나라 인구 차이가 L명, R명 이하면, 국경선 하루동안 안염.
-# 위에 따라 국경선 다 연다.
-#
-# n, l, r = map(int, input().split())
+## Q16 ## 안전영역의 크기 최대값구하기 벽은 3개
+# from itertools import combinations
+# from copy import deepcopy
+# n, m = map(int, input().split())
+# blank = []
 # mapp = []
-# for _ in range(n):
-#     mapp.append(list(map(int, input().split())))
-# location = []
-# population = []
+# for i in range(n):
+#     temp = list(map(int, input().split()))
+#     mapp.append(temp)
+#     for j in range(m):
+#         if temp[j] == 0:
+#             blank.append((i, j))
+# def virus(x, y):
+#     for i in range(4):
+#         nx = x + dx[i]
+#         ny = y + dy[i]
+#         if 0 <= nx < n and 0 <= ny < m:
+#             if mapp_temp[nx][ny] == 0:
+#                 mapp_temp[nx][ny] = 2
+#                 virus(nx, ny)
 # dx = [0, 0, 1, -1]
 # dy = [1, -1, 0, 0]
+# blank_comb = list(combinations(blank, 3))
+# final = []
+# for combi in blank_comb:
+#     result = 0
+#     mapp_temp = deepcopy(mapp)
+#     for i in combi:
+#         mapp_temp[i[0]][i[1]] = 1
+#     for q in range(n):
+#         for p in range(m):
+#             if mapp_temp[q][p] == 2:
+#                 virus(q, p)
+#     for i in range(n):
+#         result += mapp_temp[i].count(0)
+#     final.append(result)
+#
+# print(max(final))
+
+# ## Q17 ##
+# n, k = map(int, input().split())
+# mapp = []
+# virus = []
 # for i in range(n):
+#     temp = list(map(int, input().split()))
+#     mapp.append(temp)
 #     for j in range(n):
-#         location.append((i,j))
-#         population.append(mapp[i][j])
-#         for k in range(4):
-#             dtx = i + dx[k]
-#             dty = j + dy[k]
-#             if l <= abs(mapp[i][j] - mapp[dtx][dty]) <= r:
-#                 location.append((dtx, dty))
-#                 population.append(mapp[dtx][dty])
+#         if temp[j] != 0:
+#             virus.append((temp[j], i, j))
+#
+# s, x, y = map(int, input().split())
+# dx = [0, 0, 1, -1]
+# dy = [1, -1, 0, 0]
+#
+# virus_next = []
+# for k in range(s):
+#     virus.sort()
+#     for h in range(len(virus)):
+#         num, x_temp, y_temp = virus[h]
+#         for q in range(4):
+#             dx_temp = x_temp + dx[q]
+#             dy_temp = y_temp + dy[q]
+#             if 0 <= dx_temp < n and 0 <= dy_temp < n:
+#                 if mapp[dx_temp][dy_temp] == 0:
+#                     mapp[dx_temp][dy_temp] = num
+#                     virus_next.append((num, dx_temp, dy_temp))
+#     virus = virus_next
+# print(mapp[x-1][y-1])
 
-############# Question 9 ######################################################################################
+## Q18 ##
+# def balanced_index(p):
+#     count = 0
+#     for i in range(len(p)):
+#         if p[i] == '(':
+#             count += 1
+#         else:
+#             count -= 1
+#         if count == 0:
+#             return i
+#
+# def check_proper(p):
+#     count = 0
+#     for i in p:
+#         if i == '(':
+#             count += 1
+#         else:
+#             if count == 0:         # 열린게 없는데 닫아버린다고?
+#                 return False        # return False
+#             count -= 1
+#         return True
+#
+# def solution(p):
+#     answer = ''
+#     if p == '':
+#         return answer
+#     index = balanced_index(p)
+#     u = p[:index +1]
+#     v = p[index + 1:]
+#     if check_proper(u):
+#         answer = u + solution(v)
+#     else:
+#         answer = '('
+#         answer += solution(v)
+#         answer += ')'
+#         u = list(u[1:-1])
+#         for i in range(len(u)):
+#             if u[i] == '(':
+#                 u[i] = ')'
+#             else:
+#                 u[i] = '('
+#         answer += "".join(u)
+#     return answer
 
+## Q19 ##
+# from itertools import permutations
+#
+# n = int(input())
+# nums = list(map(int, input().split()))
+# op = list(map(int, input().split()))
+# operators = []
+# for i in range(4):
+#     for _ in range(op[i]):
+#         if i == 0:
+#             operators.append('+')
+#         elif i == 1:
+#             operators.append('-')
+#         elif i == 2:
+#             operators.append('*')
+#         else:
+#             operators.append('//')
+#
+# operators_var = list(permutations(operators, (n-1)))
+#
+# minimum = int(1e9)
+# maximum = -int(1e9)
+# for ops in operators_var:
+#     temp = nums[0]
+#     for q in range(len(ops)):
+#         if ops[q] == '+':
+#             temp += nums[q+1]
+#         elif ops[q] == '-':
+#             temp -= nums[q+1]
+#         elif ops[q] == '*':
+#             temp = temp * nums[q+1]
+#         else:
+#             temp = int(temp / nums[q+1])
+#     minimum = min(minimum, temp)
+#     maximum = max(maximum, temp)
+#
+# print(minimum, maximum)
+
+## Q20 ##
+# from itertools import combinations
+# from copy import deepcopy
+# n = int(input())
+# students = []
+# teachers = []
+# candidates = []
+# mapp = []
+# for i in range(n):
+#     temp = list(input().split())
+#     mapp.append(temp)
+#     for j in range(n):
+#         if temp[j] == 'T':
+#             teachers.append((i, j))
+#         elif temp[j] == 'X':
+#             candidates.append((i, j))
+#
+# candi = list(combinations(candidates, 3))
+# dx = [0, 0, 1, -1]
+# dy = [1, -1, 0, 0]
+#
+#
+# for can in candi:
+#     xy1, xy2, xy3 = can
+#     mapp_temp = deepcopy(mapp)
+#     mapp_temp[xy1[0]][xy1[1]] = 'O'
+#     mapp_temp[xy2[0]][xy2[1]] = 'O'
+#     mapp_temp[xy3[0]][xy3[1]] = 'O'
+#     possibility = True
+#     for i in teachers:
+#         x, y = i
+#         for j in range(4):
+#             c = 1
+#             while True:
+#                 x_temp = x + (dx[j] * c)
+#                 y_temp = y + (dy[j] * c)
+#                 if 0 <= x_temp < n and 0 <= y_temp < n:
+#                     if mapp_temp[x_temp][y_temp] == 'S':
+#                         possibility = False
+#                         break
+#                     elif mapp_temp[x_temp][y_temp] == 'O':
+#                         break
+#                     else:
+#                         c += 1
+#                 else:
+#                     break
+#         if possibility:
+#             print('YES')
+#             exit()
+#
+# print('NO')
+
+## Q21 ##
 from collections import deque
-def get_next_pos(pos, board):
-    pos_new = []
-    pos = list(pos)
-    dx = [0, 0, 1, -1]
-    dy = [1, -1, 0, 0]
-    p1x, p1y, p2x, p2y = pos[0][0], pos[0][1], pos[1][0], pos[1][1]
-    for i in range(4):
-        if board[p1x + dx[i]][p1y + dy[i]] != 1 and board[p2x + dx[i]][p2y + dy[i]] != 1:
-            pos_new.append({(p1x + dx[i], p1y + dy[i]), (p2x + dx[i], p2y + dy[i])})
+n, l, r = map(int, input().split())
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, input().split())))
+dx = [-1, 0, 1, 0]
+dy = [0, -1, 0, 1]
+result = 0
 
-    if p1x == p2x:
-        for i in [-1, 1]:
-            if board[p1x + i][p1y] == 0 and board[p2x + i][p2y] == 0:
-                pos_new.append({(p1x, p1y), (p2x + i, p1y)})
-                pos_new.append({(p2x, p2y), (p1x + i, p2y)})
+def process(x, y, index):
+    united = []
+    united.append((x,y))
+    q = deque()
+    q.append((x, y))
+    union[x][y] = index
+    summary = graph[x][y]
+    count = 1
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                if l <= abs(graph[nx][ny] - graph[x][y]) <= r:
+                    q.append((nx, ny))
+                    union[nx][ny] = index
+                    summary += graph[nx][ny]
+                    count += 1
+                    united.append((nx, ny))
+    for i, j in united:
+        graph[i][j] = summary // count
+        return count
 
-    elif p1y == p2y:
-        for i in [-1, 1]:
-            if board[p1x][p1y + i] == 0 and board[p2x][p2y + i] == 0:
-                pos_new.append({(p1x, p1y), (p1x, p2y + i)})
-                pos_new.append({(p2x, p2y), (p2x, p1y + i)})
+total_count = 0
 
-    return pos_new
-
-def solution(board):
-    n = len(board)
-    mapp = [[1] * (n+2) for i in range(n+2)]
+while True:
+    union = [[-1] * n for _ in range(n)]
+    index = 0
     for i in range(n):
         for j in range(n):
-            mapp[i+1][j+1] = board[i][j]
-    visited = []
-    post = {(1, 1), (1, 2)}
-    queue = deque()
-    queue.append((post, 0))
-    visited.append({(1, 1), (1, 2)})
-    while queue:
-        pos, cost = queue.popleft()
-        if (n, n) in pos:
-            return cost
-        for next_pos in get_next_pos(pos, mapp):
-            if next_pos not in visited:
-                queue.append((next_pos, cost+1))
-                visited.append(next_pos)
+            if union[i][j] == -1:
+                process(i, j, index)
+                index += 1
+    if index == n * n:
+        break
+    total_count += 1
 
+print(total_count)
 
-print(solution([[0, 0, 0, 1, 1],[0, 0, 0, 1, 0],[0, 1, 0, 1, 1],[1, 1, 0, 0, 1], [0, 0, 0, 0, 0]]))
-
+## Q22 ## *******************************************
+def solution(board):
+    answer = 0
+    return answer
